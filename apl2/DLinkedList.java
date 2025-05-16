@@ -24,9 +24,9 @@ public class DLinkedList {
 // OPERAÇÃO:		Método construtor
 // COMPORTAMENTO:	Cria uma lista vazia.
 	public DLinkedList() {
-		head = null;
-		tail = null;
-		count = 0;
+		this.head = head;
+		this.tail = tail;
+		this.count = count;
 	}
 
 
@@ -34,13 +34,18 @@ public class DLinkedList {
 // COMPORTAMENTO:	Aloca um Node que contém os <dados da pessoa> e insere o
 //					novo nó no início da lista.
 	public void insert(String id, String nome, float nota) {
-		Node node = new Node(id, nome, nota, null, head);
+		Node node = new Node(id, nome, nota, tail, head);
 		if(isEmpty())
 		{
-			tail = node;
+			tail = node; //tail aponta para o novo nó caso a lista estaja vaiza
 		}
-		head = node;
-		++count;
+		else
+		{
+			head.ant = node; //nó existente aponta para o novo nó
+		}
+		node.next = head; // novo nó aponta para o nó existente ou para se mesmo caso a lista esteja vazia
+		head = node; //head aponta para o novo nó
+		count++;
 	}
 
 
@@ -51,10 +56,15 @@ public class DLinkedList {
 		Node node = new Node(id, nome, nota, tail, head);
 		if(isEmpty())
 		{
-			head = node;
+			head = node; //head aponta para o novo nó caso a lista esteja vazia
 		}
-		tail = node;
-		++count;
+		else
+		{
+			tail.prox = node; //nó existente aponta para o novo nó 
+			node.ant = tail; //novo nó aponta para o nó existente ou para si mesmo caso a lista esteja vazia
+		}
+		tail = node; //tail aponta para o novo nó
+		count++;
 	}
 
 
@@ -65,9 +75,21 @@ public class DLinkedList {
 	public Node removeHead() {
 		if(isEmpty())
 		{
-			return null;
+			return null; //retorna null caso não exista elementos
 		}
-		
+		Node aux = head; //cria um ponteiro auxiliar que aponta para head
+		if(head == tail)
+		{
+			tail = null; //caso exista apenas um elemento, tail apontará para null
+		}
+		else
+		{
+			head.prox.ant = null; //remove o ponteiro do nó seguinte que esta apontando para o nó atual a ser removido
+		}
+		head = head.prox; // head aponta para o nó seguinte ou head aponta para null caso exista apenas um elemento
+		aux.next = null; //remove o ponteiro do nó atual que esta apontando para o nó seguinte ou remove o nó atual caso ele seja o unico existente
+		count--;
+		return aux;
 	}
 
 
@@ -76,8 +98,23 @@ public class DLinkedList {
 //					nó removido.
 //					Ou retorna null caso a lista esteja vazia.
 	public Node removeTail() {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+		if(isEmpty())
+		{
+			return null; //retorna null caso não exista elementos
+		}
+		Node aux = tail; //cria um ponteiro auxiliar que aponta para head
+		if(head == tail)
+		{
+			head = null; // caso exista apenas um elemento, head apontará para null
+		}
+		else
+		{
+			tail.ant.prox = null; //remove o ponteiro do nó anterior que esta apontando para o nó atual a ser removido
+		}
+		tail = tail.ant; //tail aponta para o nó anterior ou tail aponta para null caso exista apenas um elemento
+		aux.ant = null; //remove o ponteiro do nó atual que esta apontando para o nó anterior ou remove o nó atual caso seja o unico existente
+		count--;
+		return aux;
 	}
 
 
@@ -86,8 +123,26 @@ public class DLinkedList {
 //					a referência do nó removido.
 //					Ou retorna null caso não exista um nó com <ID da pessoa>.
 	public Node removeNode(String id) {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+		if(isEmpty())
+		{
+			return null; //retorna null caso não exista elementos
+		}
+		Node aux = head; //cria um ponteiro que aponta para head
+
+		while(aux != null) //percorre toda a lista
+		{
+			if(aux.getId().equals(id))
+			{
+				aux.ant.prox = aux.prox; //o ponteiro do nó anterior que aponta para o nó atual passa a apontar para o nó seguinte
+				aux.prox.ant = aux.ant; //o ponteiro do nó seguinte que aponta para o nó atual passa a apontar para o nó anterior
+				aux.prox = null; //remove o ponteiro do nó atual que aponta para o nó seguinte 
+				aux.ant = null; // remove o ponteiro do nó atual que aponta para o nó anteroir
+				count--;
+				return aux;
+			}
+			aux = aux.prox; // avança a lista
+		}
+		return null; //caso o elemento não exista
 	}
 
 
@@ -95,8 +150,11 @@ public class DLinkedList {
 // COMPORTAMENTO:	Retorna uma referência para o nó do início da lista.
 //					Ou retorna null caso a lista esteja vazia.
 	public Node getHead() {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+		if(isEmpty())
+		{
+			return null;
+		}
+		return head; 
 	}
 
 
@@ -104,8 +162,11 @@ public class DLinkedList {
 // COMPORTAMENTO:	Retorna uma referência para o nó do final da lista.
 //					Ou retorna null caso a lista esteja vazia.
 	public Node getTail() {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+		if(isEmpty())
+		{
+			return null;
+		}
+		return tail;
 	}
 
 
@@ -114,32 +175,51 @@ public class DLinkedList {
 //					da lista.
 //					Ou retorna null caso não exista um nó com <ID da pessoa>.
 	public Node getNode(String id) {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+		if(isEmpty())
+		{
+			return null; //retorna null caso não exista elementos
+		}
+		Node aux = head; //cria um ponteiro que aponta para head
+		while(aux != null) //percorre a lista
+		{
+			if(aux.getId().equals(id))
+			{
+				return aux; //retorna o id
+			}
+			aux = aux.prox; //percorre a lista
+		}
+		return null; //retorna null caso o elemento não exista
 	}
 
 
 // OPERAÇÃO:		count()
 // COMPORTAMENTO:	Retorna a quantidade de nós da lista.
 	public int count() {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+		return count;
 	}
 
 
 // OPERAÇÃO:		isEmpty()
 // COMPORTAMENTO:	Retorna true se a lista estiver vazia ou false, caso contrário.
 	public boolean isEmpty() {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+		return count == 0;
 	}
 
 
 // OPERAÇÃO:		clear()
 // COMPORTAMENTO:	Esvazia a lista, liberando a memória de todos os nós da lista.
 	public void clear() {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+		Node aux = head; //cria um ponteiro auxiliar que aponta para head
+		while(aux != null)
+		{
+			Node proximo = aux.next; //cria um nó que armazena o próximo nó 
+			aux.ant = null; //remove o ponteiro do nó atual que esta apontando para o nó anterior
+			aux.prox = null; //remove o ponteiro do nó atual que esta apontando para o nó seguinte
+			aux = proximo; //o ponteiro auxiliar aponta para o elemento seguinte
+		}
+		head = null;
+		tail = null;
+		count = 0;
 	}
 
 
@@ -148,8 +228,26 @@ public class DLinkedList {
 //					exemplo do método toString() da classe LinkedListOriginal).
 	@Override
 	public String toString() {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("(" + count + ") \n");
+		
+		NodeOriginal node = head;
+		while (node != null) {
+			sb.append("(")
+			.append(node.getId())
+			.append(" ; ")
+			.append(node.getNome())
+			.append(" ; ")
+			.append(node.getInteiro())
+			.append(" ; ")
+			.append(node.getDecimo())
+			.append(") -> \n");
+			node = node.getNext();
+		}
+		sb.append("null.");
+		
+		return sb.toString()
 	}
 
 }

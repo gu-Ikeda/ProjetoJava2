@@ -43,7 +43,7 @@ public class DLinkedList {
 		{
 			head.ant = node; //nó existente aponta para o novo nó
 		}
-		node.next = head; // novo nó aponta para o nó existente ou para se mesmo caso a lista esteja vazia
+		node.prox = head; // novo nó aponta para o nó existente ou para se mesmo caso a lista esteja vazia
 		head = node; //head aponta para o novo nó
 		count++;
 	}
@@ -87,7 +87,7 @@ public class DLinkedList {
 			head.prox.ant = null; //remove o ponteiro do nó seguinte que esta apontando para o nó atual a ser removido
 		}
 		head = head.prox; // head aponta para o nó seguinte ou head aponta para null caso exista apenas um elemento
-		aux.next = null; //remove o ponteiro do nó atual que esta apontando para o nó seguinte ou remove o nó atual caso ele seja o unico existente
+		aux.prox = null; //remove o ponteiro do nó atual que esta apontando para o nó seguinte ou remove o nó atual caso ele seja o unico existente
 		count--;
 		return aux;
 	}
@@ -212,7 +212,7 @@ public class DLinkedList {
 		Node aux = head; //cria um ponteiro auxiliar que aponta para head
 		while(aux != null)
 		{
-			Node proximo = aux.next; //cria um nó que armazena o próximo nó 
+			Node proximo = aux.prox; //cria um nó que armazena o próximo nó 
 			aux.ant = null; //remove o ponteiro do nó atual que esta apontando para o nó anterior
 			aux.prox = null; //remove o ponteiro do nó atual que esta apontando para o nó seguinte
 			aux = proximo; //o ponteiro auxiliar aponta para o elemento seguinte
@@ -247,7 +247,7 @@ public class DLinkedList {
 		}
 		sb.append("null.");
 		
-		return sb.toString()
+		return sb.toString();
 	}
 
 }

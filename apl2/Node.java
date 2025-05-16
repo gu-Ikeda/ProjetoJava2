@@ -16,17 +16,17 @@ package apl2;
 
 public class Node {
 	
-	private int id;
+	private String id;
 	private String nome;
 	private float nota;
-	private Node ant;
-	private Node prox;
+	public Node ant;
+	public Node prox;
 
 	public Node(){
-		this(null, "", 99.9, null, null);
+		this(null, "", (float) 99.9, null, null);
 	}
 
-	public Node(int id, String nome, float nota, Node ant, Node prox){
+	public Node(String id, String nome, float nota, Node ant, Node prox){
 		this.id = id;
 		this.nome = nome;
 		this.nota = nota;
@@ -34,11 +34,11 @@ public class Node {
 		this.prox = prox;
 	}
 	
-	public int getId(){
+	public String getId(){
 		return id;
 	}
 
-	public void setid(int id){
+	public void setid(String id){
 		this.id = id;
 	}
 
@@ -50,11 +50,11 @@ public class Node {
 		this.nome = nome;
 	}
 
-	public getNota(){
+	public float getNota(){
 		return nota;
 	}
 
-	public setNota(float nota){
+	public void setNota(float nota){
 		this.nota = nota;
 	}
 

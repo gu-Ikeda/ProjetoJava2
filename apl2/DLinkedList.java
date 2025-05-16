@@ -24,9 +24,9 @@ public class DLinkedList {
 // OPERAÇÃO:		Método construtor
 // COMPORTAMENTO:	Cria uma lista vazia.
 	public DLinkedList() {
-		this.head = head;
-		this.tail = tail;
-		this.count = count;
+		this.head = null;
+		this.tail = null;
+		this.count = 0;
 	}
 
 

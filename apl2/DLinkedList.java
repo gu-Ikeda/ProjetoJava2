@@ -232,18 +232,16 @@ public class DLinkedList {
 		
 		sb.append("(" + count + ") \n");
 		
-		NodeOriginal node = head;
+		Node node = head;
 		while (node != null) {
 			sb.append("(")
 			.append(node.getId())
 			.append(" ; ")
 			.append(node.getNome())
 			.append(" ; ")
-			.append(node.getInteiro())
-			.append(" ; ")
-			.append(node.getDecimo())
+			.append(node.getNota())
 			.append(") -> \n");
-			node = node.getNext();
+			node = node.getProx();
 		}
 		sb.append("null.");
 		
